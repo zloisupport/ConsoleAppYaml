@@ -88,78 +88,106 @@ namespace ConsoleAppYaml
     {
         static void Main(string[] args)
         {
-  
-            var yml = @"D:\Games\Riot Games\League of Legends\Config\LeagueClientSettings45.yaml";
-            var yml1 = @"C:\Users\mercy\source\Repository\ParseYaml\yamldotnet\bin\Debug\docYaml1.yml";
+
+            Console.WriteLine("1-RU 2-EUW");
+
+            var key = Convert.ToInt16(Console.ReadLine());
+
+            string server = key == 1 ?"RU": "EUW";
+
+
+            string ProgramDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var lol_live_product_settings = "\\Riot Games\\Metadata\\league_of_legends.live\\league_of_legends.live.product_settings.yaml";
+            string product_install_full_path="";
+            string LeagueClientSettings = "\\Config\\LeagueClientSettings.yaml";
+
+            if (ChekingFiles(ProgramDataDir, lol_live_product_settings))
+            {
+
+                var reader = new StreamReader(ProgramDataDir + lol_live_product_settings);
+                var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                .Build();
+                var p = deserializer.Deserialize<FileConfig>(reader);
+                product_install_full_path = p.product_install_full_path;
+                p.locale_data.available_locales =new List<string>(){"ru_RU", "en_GB","de_DE","es_ES" };
+                p.locale_data.default_locale = "ru_RU";
+                p.settings.locale= "ru_RU";
+                reader.Close();
+
+
+                WriteProductSettings(p, ProgramDataDir + lol_live_product_settings);
+            }
+
+            if (ChekingFiles(product_install_full_path, LeagueClientSettings))
+            {
+                var reader = new StreamReader(product_install_full_path + LeagueClientSettings);
+                var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                .Build();
+                var p = deserializer.Deserialize<ClientSetting>(reader);
+
+                p.install.crash_reporting.enabled = false;
+                p.install.globals.region = server;
+                reader.Close();
+                WriteLeagueClient(p, product_install_full_path + LeagueClientSettings);
+
+            }
 
 
 
+        }
 
-            var reader = new StreamReader(yml);
+        #region  Write Data conf
+        private static void WriteLeagueClient(ClientSetting data,string file)
+        {
 
+            using (var writer = new StreamWriter(file))
+            {
+                var serializer = new SerializerBuilder()
+                    .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                    .Build();
+                serializer.Serialize(writer, data);
+            }
 
-            var deserializer = new DeserializerBuilder()
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .Build();
+        } 
+        
+        private static void WriteProductSettings(FileConfig data,string file)
+        {
 
-            var p = deserializer.Deserialize<ClientSetting>(reader);
-            //var h = p.dependencies["Direct X 9"];
-            // System.Console.WriteLine($"{p.auto_patching_enabled_by_player} {h.hash} {p.product_install_full_path}");
+            using (var writer = new StreamWriter(file))
+            {
+                var serializer = new SerializerBuilder()
+                    .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                    .Build();
+                serializer.Serialize(writer, data);
+            }
 
-            Console.WriteLine($"{p.install.globals.region}");
-
-            //string rus = "ru_RU";
-            //string eng = "en_GB";
-
-            //var F = new FileConfig
-            //{
-            //    auto_patching_enabled_by_player = false,
-            //    dependencies = new Dictionary<string, Dependencie> { {
-            //            "Direct X 9", new Dependencie() {
-            //                hash = "Imported",
-            //                version = @"1.0.0"
-            //            } } },
-
-            //    locale_data = new LocalData()
-            //    {
-            //        available_locales = new() { rus, eng },
-            //        default_locale = "ru_RU"
-            //    },
-            //    patching_policy = "manual",
-            //    patchline_patching_ask_policy = "ask",
-            //    product_install_full_path = "D:\\Games\\Riot Games\\League of Legends",
-            //    product_install_root = "D:/Games/Riot Games/",
-            //    settings = new Setting
-            //    {
-            //        create_shortcut = null,
-            //        create_uninstall_key= null,
-            //        locale= "ru_RU"
-            //    },
-            //    should_repair=false
-            //};
+        }
+        #endregion
 
 
 
-
-            ////var serializer = new SerializerBuilder()
-            ////    .WithEventEmitter(nextEmitter => new QuoteSurroundingEventEmitter(nextEmitter))
-            ////    .Build();
-
-
-            //using (var writer = new StreamWriter(yml1))
-            //{
-            //    // Save Changes
-            //    var serializer = new SerializerBuilder()
-            //        .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            //        .Build();
-            //    serializer.Serialize(writer, F);
-            //}
-
-
-
-
-
-
+        private static bool ChekingFiles(string path,string fileName)
+        {
+            if (File.Exists(path+ fileName))
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"File \"{fileName}\" found");
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+                Console.WriteLine("To: " + fileName);
+                Console.ResetColor();
+                return true;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"File \"{fileName}\" not found");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("To: " + fileName);
+                Console.ResetColor();
+                return false;
+            }
         }
     }
 }

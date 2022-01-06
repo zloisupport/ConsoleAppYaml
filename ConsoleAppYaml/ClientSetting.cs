@@ -9,16 +9,17 @@ using YamlDotNet.Serialization;
 
 namespace ConsoleAppYaml
 {
-    class ClientSetting
+    public class ClientSetting
     {
         public Install install { get; set; }
     }
 
     public class Install
     {
+       
         public CrashReport crash_reporting { get; set; }
 
-        [YamlMember(Alias = "game-settings")]
+        [YamlMember(Alias = "game-settings",ApplyNamingConventions = false)]
         public GameSettings game_settings { get; set; }
 
         [YamlMemberAttribute(Alias = "gameflow-patcher-lock", ApplyNamingConventions = false)]
@@ -103,8 +104,12 @@ namespace ConsoleAppYaml
 
     public class Globals
     {
+        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
         public string locale { get; set; }
+
+        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
         public string region { get; set; }
+
     }
 
     public class IcuSettings
@@ -129,8 +134,9 @@ namespace ConsoleAppYaml
 
     public class GameSettings
     {
-        public int acc_ount_id { get; set; }
-        public string modified { get; set; }
-        public int timestamp { get; set; }
+        [YamlMemberAttribute(Alias = "accountId", ApplyNamingConventions = false)]
+        public long acc_ount_id { get; set; }
+        public bool modified { get; set; }
+        public long timestamp { get; set; }
     }
 }
