@@ -12,78 +12,6 @@ using YamlDotNet.Serialization.NamingConventions;
 namespace ConsoleAppYaml
 {
 
-    public class FileConfig
-    {
-        public bool auto_patching_enabled_by_player { get; set; }
-
-        public  Dictionary<string, Dependencie> dependencies { get; set; }
-
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public  LocalData locale_data { get; set; }
-
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public string patching_policy { get; set; }
-
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public string patchline_patching_ask_policy { get; set; }
-
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public string product_install_full_path { get; set; }
-
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public string product_install_root { get; set; }
-
-        public Setting settings {get; set; }
-        public bool should_repair { get; set; }
-    }
-
-
-    /// <summary>
-    /// Double qoutes on
-    /// </summary>
-    public class QuoteSurroundingEventEmitter : ChainedEventEmitter
-    {
-        public QuoteSurroundingEventEmitter(IEventEmitter nextEmitter) : base(nextEmitter)
-        { }
-
-        public override void Emit(ScalarEventInfo eventInfo, IEmitter emitter)
-        {
-            if (eventInfo.Source.StaticType == typeof(Object))
-                eventInfo.Style = ScalarStyle.DoubleQuoted;
-            base.Emit(eventInfo, emitter);
-        }
-    }
-
-    public class Dependencie
-    {
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public string hash { get; set; }
-
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public string phase { get; set; }
-
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public string version { get; set; }
-    }
-
-    public class LocalData
-    {
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public List<string> available_locales { get; set; }
-
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public string default_locale { get; set; } 
-    }
-
-    public class Setting
-    {
-        public string create_shortcut {get; set;}
-        public string create_uninstall_key { get; set; }
-
-        [YamlMember(ScalarStyle = ScalarStyle.DoubleQuoted)]
-        public string locale {get; set;}
-    }
-
     class Program
     {
         static void Main(string[] args)
@@ -108,7 +36,7 @@ namespace ConsoleAppYaml
                 var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .Build();
-                var p = deserializer.Deserialize<FileConfig>(reader);
+                var p = deserializer.Deserialize<LauncherSetting>(reader);
                 product_install_full_path = p.product_install_full_path;
                 p.locale_data.available_locales =new List<string>(){"ru_RU", "en_GB","de_DE","es_ES" };
                 p.locale_data.default_locale = "ru_RU";
@@ -152,7 +80,7 @@ namespace ConsoleAppYaml
 
         } 
         
-        private static void WriteProductSettings(FileConfig data,string file)
+        private static void WriteProductSettings(LauncherSetting data,string file)
         {
 
             using (var writer = new StreamWriter(file))
