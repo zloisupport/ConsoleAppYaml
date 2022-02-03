@@ -36,15 +36,20 @@ namespace ConsoleAppYaml
                 var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .Build();
+             //   try { 
                 var p = deserializer.Deserialize<LauncherSetting>(reader);
-                product_install_full_path = p.product_install_full_path;
-                p.locale_data.available_locales =new List<string>(){"ru_RU", "en_GB","de_DE","es_ES" };
-                p.locale_data.default_locale = "ru_RU";
-                p.settings.locale= "ru_RU";
-                reader.Close();
+                    product_install_full_path = p.product_install_full_path;
+                    p.locale_data.available_locales = new List<string>() { "ru_RU", "en_GB", "de_DE", "es_ES" };
+                    p.locale_data.default_locale = "ru_RU";
+                    p.settings.locale = "ru_RU";
+                    Console.WriteLine(p);
+                    reader.Close();
+                    WriteProductSettings(p, ProgramDataDir + lol_live_product_settings);
+            //    }
+               // catch(Exception e) {
+                     //   Console.WriteLine(e);
+          //      };
 
-
-                WriteProductSettings(p, ProgramDataDir + lol_live_product_settings);
             }
 
             if (ChekingFiles(product_install_full_path, LeagueClientSettings))
