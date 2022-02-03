@@ -36,7 +36,7 @@ namespace ConsoleAppYaml
                 var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .Build();
-             //   try { 
+              try { 
                 var p = deserializer.Deserialize<LauncherSetting>(reader);
                     product_install_full_path = p.product_install_full_path;
                     p.locale_data.available_locales = new List<string>() { "ru_RU", "en_GB", "de_DE", "es_ES" };
@@ -45,10 +45,11 @@ namespace ConsoleAppYaml
                     Console.WriteLine(p);
                     reader.Close();
                     WriteProductSettings(p, ProgramDataDir + lol_live_product_settings);
-            //    }
-               // catch(Exception e) {
-                     //   Console.WriteLine(e);
-          //      };
+             }
+               catch(YamlException e) {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Deserialize error:" + e);
+             };
 
             }
 
