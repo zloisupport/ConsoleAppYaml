@@ -13,7 +13,7 @@
 //TODO
 
 ## Видео гайд по использованию:
-[![You tube](https://i9.ytimg.com/vi/S57Z-VMy53I/mq1.jpg?sqp=CNCt0pIG&rs=AOn4CLDB15_eox5ld53T6hMPsTHc5ZBUNA)](https://youtu.be/S57Z-VMy53I)
+[![You tube](https://i.ytimg.com/vi/S57Z-VMy53I/hqdefault.jpg)](https://youtu.be/S57Z-VMy53I)
 
 ## 📃 Лицензия
 MIT
