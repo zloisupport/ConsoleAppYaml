@@ -68,6 +68,10 @@ namespace PlayEuwRusClient
 
     public class RiotClientUpgrade
     {
+        
+        [YamlMember(Alias = "recovery-failures", ApplyNamingConventions = false)]
+        public int recovery_failures { get; set; }
+
         [YamlMember(Alias = "seq-success-count", ApplyNamingConventions = false)]
         public int seq_success_count { get; set; }
 
