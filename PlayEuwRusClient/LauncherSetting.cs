@@ -7,7 +7,7 @@ using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.EventEmitters;
 
-namespace ConsoleAppYaml
+namespace PlayEuwRusClient
 {
     class LauncherSetting
     {
@@ -31,6 +31,9 @@ namespace ConsoleAppYaml
         public string product_install_root { get; set; }
 
         public Setting settings { get; set; }
+
+        public string shortcut_name { get; set; }
+
         public bool should_repair { get; set; }
     }
 

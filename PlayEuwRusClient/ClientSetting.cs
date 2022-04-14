@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
-namespace ConsoleAppYaml
+namespace PlayEuwRusClient
 {
     public class ClientSetting
     {
