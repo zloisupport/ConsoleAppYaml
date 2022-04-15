@@ -11,6 +11,8 @@ using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.EventEmitters;
 using YamlDotNet.Serialization.NamingConventions;
 
+
+
 namespace PlayEuwRusClient
 {
 
@@ -74,6 +76,14 @@ Enter command:
 
             }
         }
+
+        public static void AddFileSecurity(string fileName, string account)
+        {
+
+        }
+
+        
+
 
         private static void AppConfigs(string server,string setFullpath="")
         {
