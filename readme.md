@@ -8,7 +8,7 @@
 
 ## Требуется для запуска:
 
-**NET core 5** [Скачиваем тут](https://dotnet.microsoft.com/en-us/download/dotnet/5.0)
+**NET core 5** [Скачиваем тут](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) 5.0.15
 
 **Аккаунт на EUW** .Если его нет создаем его тут [Регистрация на EUW](https://signup.euw.leagueoflegends.com/en/signup/index)
 
