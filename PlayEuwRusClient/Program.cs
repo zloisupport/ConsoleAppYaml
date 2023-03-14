@@ -79,7 +79,7 @@ namespace PlayEuwRusClient
             + ---------------------------------------------+-
             |                                             |
             |      Copyright (c) 2022-2023,zloisupport    |
-            |                  v 1.0.2                    |
+            |                  v 1.0.3.0                  |
             |                                             |
             +---------------------------------------------+-");
                 Console.ForegroundColor = ConsoleColor.Yellow;
@@ -115,9 +115,12 @@ namespace PlayEuwRusClient
                         break;
                     case "path":
                     case "3":
-                        Console.WriteLine("Please set league of legends path:");
+                        Console.WriteLine($"{localization.action_set_game_path}:({localization.cancel_action_set_path_game})");
                         var setFullpath = Convert.ToString(Console.ReadLine());
-                        AppConfigs(null, setFullpath);
+                        if(setFullpath != "0")
+                        {
+                            AppConfigs(null, setFullpath);
+                        }
                         break;
                     case "01":
                         KillProcess("RiotClientServices");
@@ -218,8 +221,8 @@ namespace PlayEuwRusClient
                     reader.Close();
                     WriteProductSettings(p, ProgramDataDir + lol_live_product_settings);
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"{localization.parameter_applying}");
-                    Console.WriteLine($"{localization.message_success}");
+                    Console.WriteLine($"{localization.parameter_applying} {server} {localization.server}!");
+                    Console.WriteLine($"{localization.message_success}!");
                     Console.ResetColor();
                 }
                 catch (YamlException e)

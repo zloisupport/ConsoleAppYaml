@@ -27,11 +27,20 @@ namespace PlayEuwRusClient
         public string enter_command { get; set; } 
         public string message_success { get; set; } 
         public string warning_please_close_riot_apps { get; set; }
+        public string cancel_action_set_path_game { get; set; }
 
 
         public  Localization ReadLocalization()
         {
-            var localeFile = Reader("", "en.yaml");
+            SystemLanguage systemLanguage = new SystemLanguage();
+            string localizationFile = "en.yaml";
+            if (systemLanguage.getSystemLanguage() == "ru-RU")
+            {
+                localizationFile = "ru.yaml";
+            }
+
+            var localeFile = Reader("./Language/", localizationFile);
+
 
             var localizationDeserializer = new DeserializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)

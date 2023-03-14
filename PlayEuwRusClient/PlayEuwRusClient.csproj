@@ -5,7 +5,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <ApplicationIcon>lss.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.0.2.0</Version>
+    <Version>1.0.3.0</Version>
     <Description>Utility for playing on the euw server under the Russian client.</Description>
     <Copyright>zloisupport</Copyright>
     <RepositoryUrl>https://github.com/zloisupport/PlayEuwRusClient</RepositoryUrl>
@@ -16,6 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
     <PackageReference Include="Sharprompt" Version="2.4.1" />
     <PackageReference Include="YamlDotNet" Version="11.2.1" />
   </ItemGroup>
