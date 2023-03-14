@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using YamlDotNet.Core;
 using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
@@ -20,70 +22,163 @@ namespace PlayEuwRusClient
     {
         static void Main(string[] args)
         {
+
+            string asciiText = @"
+	                         ..:?JJJJJJ!.
+	       :::::::::.     ~JG&&@@@@@@@@&BP7:
+	      ?##&@@@&@@&G555G#&&GJJB&&BY!JB&&&B:
+	        .!7JGB#&@@@@@@&&&#G7:B&5.  ~&&&B~5&&P!!!~.
+	            .::~!7PGG#&&&#5~!B&&GY5B&&P!5&@@@@@@@BY.
+	:5BBBB#&&&#BPPPP5JY&B5YJ??!7P&&&&&&&#P?JPBB&@@&B5~^. .
+	.::::!JJJ7J5PPPY5@@@@@&&####BBBPJ?JYJPGP55?77?5Y: ^YP~
+	              .Y@@@@@@@&BJ!Y7:!^7Y?777???5GPPG&@&:755!
+	             7#@@@@@&GY7JJ7P55#~?#GP? :7?JPGGGB##:7YJ?^          .....
+	          :J#@@@@#GYJ55PB#&#5YJ:J#BBY.:::~~:^?J7:7YY?7~.  .   ^77P&57J7~:
+	        :5&@@@#P!^JG&&&#P55Y!^:.J#BP!.^^^!!~~7!~!Y5YJJJ7?5&&!?GP7?&Y:7&#J~.
+	      ^P&@&BY~!B#&@&BP5?^::^~~~7G#B?.^^^^~!77!!5GGG5?~!G@@&5^~?J!^^:^^5&J~Y?.
+	     ~B&BJ^.   ?@@B~: ~?7??7~B&#BBJ..:.:^!7!::JGGGGJ::P@@&::^..^^^^^^^:::.7&B^
+	    .?5!.       :!   ~PPJJ7!!&&BP7::::~!7!^^..?Y55J:^!Y&@&:^!~:...:::::.   .~:
+	                     ^7YGBBG#GY!::^^:^!~!77?^:!7??7~^~!JBB5!^:::^^!7.
+	                       .!7!~!^..::^!7??JJ?777~:~7777~^::75GP5J?Y5PY^
+	            ..:?5^     :!~..?YPGPPP555J?777777~.::~!!~^:..::~!7?~.
+	          .~?7JB5.:YGGG?~!~:~YPGBBG5YYYYJJ?!~^^::::::^~!!!!~::.
+	         .!JGB5!^:.?G&@@B!~^.^~J55P5YJJJ?!:.:~~~^^^^^:~Y7777~^^.   .....
+	         ^JY5P57:^:.7!G&#?.:. !?::~~~~~~?7.:7777!~~~^::?J7777~^^..!JYYYY7^.
+	         .?Y557^^^:.~.7BB?   .YP~~5PP5YYY?^^!7777777!!::J?7777~:^::?YYYYYYJ^
+	          :7PGP?^^::~7557:   :5G77PGGG5YYY?::777777777!~~J7777!!7~:~77?JYY?7^
+	            ...... ....      .YB77PGGGG5YY?^:!777777777^.!!~~^~!!7~.?YJ7~!77~
+	         .^~.             !?^J?Y5JJGGGGG5YY?~:7777!!!^:^7?J?7!~:.::.7Y?7~::7~
+	         :7YJ~:.        .?P5???77!!J5PGG5YY?~^:~!!!!^^7JJY5#&#G555J^~~!77!::~
+	          .!YYYJ?!:::::?B&@@@!~!?J7!!^^^^^^^^^~!~~~:^?5B&@@@@@@@&&&&#5^~77^.:
+	           .^7??7?YYY?P@@@@@@#!:^~~~~~^^^~^^^^^^^^^.^P&@@@@@@@&#####&&5^~7~.
+	             .^^:?YYJ^G@&BPPPGG?^:^^^^^^^^^^^^^^^^^:Y&&@@@##5!7JJJ?!JP#~:~.
+	                .!777^^7YY?~.^~~!~::^^:^^^^^^^^^^^^~G&&&BY?~^.~YYYY7.:~...
+	                  :~!7.^YYJ7~^~!!~~!!^:...:^^^^^^^^:7BBJ~^!!7^^7JYYY?.^.
+	                       .!77!^.:~!!77!~~.:::..........^^.!77777::7???7.~.
+	                       :^^~7777!^:^!!: .^^^^^:..:::::.  ^77!~~~^:::::^^.
+	                     !5PP5YJ55?777!^:                    .::^~!777!!77~.
+	                     !YG#57#&GJ:..                         ~?GY!775BJ!GBJ.
+	                           ^:                              .#&J:.!#&#7^5G!.
+	                                                            ^.     .^.";
+            Console.WriteLine(asciiText);
+            Thread.Sleep(1000);
+            Console.OutputEncoding = Encoding.UTF8;
             int x = 0;
-            while (x <1) { 
-                Console.Title = "PlayEuwRusClient";
-                Console.WriteLine(@"
-+ ---------------------------------------------+-
-|                                             |
-|      Copyright (c) 2022,zloisupport         |
-|                  v 1.0.1                    |
-|                                             |
-+---------------------------------------------+-
-👾 Select server to playing  : 
--(1) Русский (RUSSIAN)  
--(2) European West (EUW)
--(3) Set League of Legends folder 
--(01) Kill Riot Client 
--(02) Kill League of Legends Client 
--(03) Kill League of Legends Game 
--(00) Exit
-Enter command:
-");
-               
-        string input = Console.ReadLine().Trim().ToLowerInvariant();
-            switch (input)
+            LogHelper.Log(LogTarget.File, "-----------------------LOG START------------------");
+            while (x < 1)
             {
-                case "rus":
-                case "1":
-                    AppConfigs("RU");
-                    break;
-                case "eng":
-                case "2":
-                    AppConfigs("EUW");
-                    break;
-                case "exit":
-                case "00":
-                        x +=1;
+                Console.Clear();
+                CheckProcess();
+                ReadLocalConfig();
+                Console.Title = "PlayEuwRusClient";
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($@"
+            + ---------------------------------------------+-
+            |                                             |
+            |      Copyright (c) 2022-2023,zloisupport    |
+            |                  v 1.0.2                    |
+            |                                             |
+            +---------------------------------------------+-");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine($@"
+             Select server to playing  : 
+            -(1) Русский (RUSSIAN)  
+            -(2) European West (EUW)
+            -(3) Set League of Legends folder 
+            -(01) Kill Riot Client 
+            -(02) Kill League of Legends Client 
+            -(03) Kill League of Legends Game 
+            -(04) Kill Riot Apps
+            -(00) Exit
+            Enter command:
+            ");
+                Console.ResetColor();
+                string input = Console.ReadLine().Trim().ToLowerInvariant();
+            
+                switch (input)
+                {
+                    case "rus":
+                    case "1":
+                        AppConfigs("RU");
+                        break;
+                    case "eng":
+                    case "2":
+                        AppConfigs("EUW");
+                        break;
+                    case "exit":
+                    case "00":
+                        x += 1;
                         Environment.Exit(0);
-                    break;
-                case "path":
-                case "3":
-                    Console.WriteLine("Please set league of legends path:");
-                    var setFullpath = Convert.ToString(Console.ReadLine());
-                    AppConfigs(null, setFullpath);
-                    break;
-                case "01":
-                    KillProcess("RiotClientServices");
-                    break;
-                case "02":
-                    KillProcess("LeagueClient");
-                    break;
-                case "03":
-                    KillProcess("League of Legends");
-                    break;
+                        break;
+                    case "path":
+                    case "3":
+                        Console.WriteLine("Please set league of legends path:");
+                        var setFullpath = Convert.ToString(Console.ReadLine());
+                        AppConfigs(null, setFullpath);
+                        break;
+                    case "01":
+                        KillProcess("RiotClientServices");
+                        break;
+                    case "02":
+                        KillProcess("LeagueClient");
+                        break;
+                    case "03":
+                        KillProcess("League of Legends");
+                        break;                    
+                    case "04":
+                        KillProcess("League of Legends");
+                        KillProcess("RiotClientServices");
+                        KillProcess("LeagueClient");
+                        break;
+                }
+             
             }
-
-            }
+            LogHelper.Log(LogTarget.File, "------------------------LOG END-------------------");
         }
 
-        public static void AddFileSecurity(string fileName, string account)
+
+        private static string Reader(string path, string name)
         {
-
+            StreamReader reader = new StreamReader(path + name);
+            string content = reader.ReadToEnd();
+            reader.Close();
+            return content;
         }
 
-        
 
+        private static void ReadLocalConfig()
+        {
+            string ProgramDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var lol_live_product_settings = "\\Riot Games\\Metadata\\league_of_legends.live\\league_of_legends.live.product_settings.yaml";
+            string product_install_full_path = "";
+            string LeagueClientSettings = "\\Config\\LeagueClientSettings.yaml";
+            if (ChekingFiles(ProgramDataDir, lol_live_product_settings))
+            {
+                var reader = Reader(ProgramDataDir , lol_live_product_settings);
+
+                var deserializer = new DeserializerBuilder()
+                .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                .Build();
+
+                try
+                { 
+                     Console.WriteLine("Current config");
+                     var p = deserializer.Deserialize<LauncherSetting>(reader);
+                        product_install_full_path = p.product_install_full_path;
+                    reader = Reader(product_install_full_path, LeagueClientSettings);
+                    var clientSetting = deserializer.Deserialize<ClientSetting>(reader);
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
+                    Console.WriteLine("locale: "+p.settings.locale);
+                    Console.WriteLine("server: "+clientSetting.install.globals.region);
+                }
+                catch
+                {
+                    Console.WriteLine("Oops!!!");
+                    Console.WriteLine("Riot Launcher config missing !!");
+                    LogHelper.Log(LogTarget.File, $"Riot Launcher config missing !!");
+                }
+            }
+        }
 
         private static void AppConfigs(string server,string setFullpath="")
         {
@@ -108,9 +203,12 @@ Enter command:
                     p.locale_data.default_locale = "ru_RU";
                     p.settings.locale = "ru_RU";
                     if (setFullpath != "") { p.product_install_full_path = setFullpath; }
-                    Console.WriteLine(p);
                     reader.Close();
                     WriteProductSettings(p, ProgramDataDir + lol_live_product_settings);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Applying {server} server!");
+                    Console.WriteLine("Success!");
+                    Console.ResetColor();
                 }
                 catch (YamlException e)
                 {
@@ -122,8 +220,7 @@ Enter command:
 
             if (ChekingFiles(product_install_full_path, LeagueClientSettings))
             {
-
-                Console.WriteLine(server);
+             
                 var reader = new StreamReader(product_install_full_path + LeagueClientSettings);
                 var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -151,15 +248,28 @@ Enter command:
                 serializer.Serialize(writer, data);
             }
 
-        } 
-        
+        }
+
+        private static void CheckProcess()
+        {
+            Process[] RiotProcess = Process.GetProcessesByName("RiotClientServices");
+            if (RiotProcess.Length != 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Please close all applications from Riot Games to continue.");
+                Console.ResetColor();
+            }
+        }
 
         private static void KillProcess(string processName)
         {
+            LogHelper.Log(LogTarget.File, $"KillProcess {processName}");
             Console.Clear();
             foreach (var process in Process.GetProcessesByName(processName))
             {
+               
                 process.Kill();
+                LogHelper.Log(LogTarget.File, $"Process {processName} killed");
             }
         }
         private static void WriteProductSettings(LauncherSetting data,string file)
@@ -180,23 +290,17 @@ Enter command:
 
         private static bool ChekingFiles(string path,string fileName)
         {
-          
+            LogHelper.Log(LogTarget.File, $"Cheking Files");
             if (File.Exists(path+ fileName))
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"File \"{path + fileName}\" found");
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.WriteLine("To: "+path  + fileName);
-                Console.ResetColor();
+                LogHelper.Log(LogTarget.File, $"File \"{path + fileName}\" found");
+                LogHelper.Log(LogTarget.File, $"Result True");
                 return true;
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"File \"{path + fileName}\" not found");
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("To: "+path + fileName);
-                Console.ResetColor();
+                LogHelper.Log(LogTarget.File, $"File \"{path + fileName}\" not found");
+                LogHelper.Log(LogTarget.File, $"Result False");
                 return false;
             }
         }
