@@ -25,4 +25,13 @@
     <Folder Include="Language\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Language\en.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Language\ru.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
