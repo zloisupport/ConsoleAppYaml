@@ -20,6 +20,7 @@ namespace PlayEuwRusClient
 
     class Program
     {
+        private static Localization localization = Localization();
         static void Main(string[] args)
         {
 
@@ -64,6 +65,8 @@ namespace PlayEuwRusClient
             Thread.Sleep(1000);
             Console.OutputEncoding = Encoding.UTF8;
             int x = 0;
+
+            
             LogHelper.Log(LogTarget.File, "-----------------------LOG START------------------");
             while (x < 1)
             {
@@ -81,16 +84,16 @@ namespace PlayEuwRusClient
             +---------------------------------------------+-");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine($@"
-             Select server to playing  : 
-            -(1) Русский (RUSSIAN)  
-            -(2) European West (EUW)
-            -(3) Set League of Legends folder 
-            -(01) Kill Riot Client 
-            -(02) Kill League of Legends Client 
-            -(03) Kill League of Legends Game 
-            -(04) Kill Riot Apps
-            -(00) Exit
-            Enter command:
+             {localization.select_action}  : 
+            -(1) {localization.action_set_russian_server}
+            -(2) {localization.action_set_euw_server}
+            -(3) {localization.action_set_game_path}
+            -(01) {localization.action_kill_riot_client} 
+            -(02) {localization.action_kill_leagueflegends_client} 
+            -(03) {localization.action_kill_leagueflegends_game} 
+            -(04) {localization.action_kill_riot_all} 
+            -(00) {localization.action_exit} 
+            {localization.enter_command}:
             ");
                 Console.ResetColor();
                 string input = Console.ReadLine().Trim().ToLowerInvariant();
@@ -146,8 +149,16 @@ namespace PlayEuwRusClient
         }
 
 
-        private static void ReadLocalConfig()
+        private static Localization Localization()
         {
+            Localization localization = new Localization();
+            Localization local = localization.ReadLocalization();
+            return local;
+        }
+
+        private static void ReadLocalConfig()
+        { 
+            
             string ProgramDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             var lol_live_product_settings = "\\Riot Games\\Metadata\\league_of_legends.live\\league_of_legends.live.product_settings.yaml";
             string product_install_full_path = "";
@@ -162,14 +173,14 @@ namespace PlayEuwRusClient
 
                 try
                 { 
-                     Console.WriteLine("Current config");
+                     Console.WriteLine($"{localization.current_config}");
                      var p = deserializer.Deserialize<LauncherSetting>(reader);
                         product_install_full_path = p.product_install_full_path;
                     reader = Reader(product_install_full_path, LeagueClientSettings);
                     var clientSetting = deserializer.Deserialize<ClientSetting>(reader);
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.WriteLine("locale: "+p.settings.locale);
-                    Console.WriteLine("server: "+clientSetting.install.globals.region);
+                    Console.WriteLine($"{localization.locale}: " +p.settings.locale);
+                    Console.WriteLine($"{localization.server}: " +clientSetting.install.globals.region);
                 }
                 catch
                 {
@@ -182,6 +193,7 @@ namespace PlayEuwRusClient
 
         private static void AppConfigs(string server,string setFullpath="")
         {
+
             Console.Clear();
             string ProgramDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
             var lol_live_product_settings = "\\Riot Games\\Metadata\\league_of_legends.live\\league_of_legends.live.product_settings.yaml";
@@ -206,8 +218,8 @@ namespace PlayEuwRusClient
                     reader.Close();
                     WriteProductSettings(p, ProgramDataDir + lol_live_product_settings);
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"Applying {server} server!");
-                    Console.WriteLine("Success!");
+                    Console.WriteLine($"{localization.parameter_applying}");
+                    Console.WriteLine($"{localization.message_success}");
                     Console.ResetColor();
                 }
                 catch (YamlException e)
@@ -256,7 +268,7 @@ namespace PlayEuwRusClient
             if (RiotProcess.Length != 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Please close all applications from Riot Games to continue.");
+                Console.WriteLine($"{localization.warning_please_close_riot_apps}");
                 Console.ResetColor();
             }
         }

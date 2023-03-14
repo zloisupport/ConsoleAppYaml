@@ -5,15 +5,23 @@
     <TargetFramework>net5.0</TargetFramework>
     <ApplicationIcon>lss.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.0.2.0</Version>
+    <Description>Utility for playing on the euw server under the Russian client.</Description>
+    <Copyright>zloisupport</Copyright>
+    <RepositoryUrl>https://github.com/zloisupport/PlayEuwRusClient</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Sharprompt" Version="2.4.1" />
     <PackageReference Include="YamlDotNet" Version="11.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Language\" />
   </ItemGroup>
 
 </Project>
