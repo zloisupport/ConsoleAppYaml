@@ -9,7 +9,7 @@ action_kill_leagueflegends_game: "Завершить процесс League of Le
 action_kill_riot_all: "Завершить все  процессы Riot"
 action_exit: "Выйти"
 enter_command: "Введите команду"
-warning_please_close_riot_apps: "Please close all applications from Riot Games to continue."
+warning_please_close_riot_apps: "Пожалуйста, закройте все приложения Riot Games, чтобы продолжить."
 locale: "Язык"
 server: "Сервер"
 current_config: "Текущие параметры"
