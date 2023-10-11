@@ -7,24 +7,34 @@ using System.Threading.Tasks;
 
 namespace PlayEuwRusClient
 {
+   
     public enum LogTarget
     {
         File
     }
     public abstract class LogBase
     {
+       
         public abstract void Log(string message);
     }
 
     public class FileLogger : LogBase
     {
+        private static bool isfirstLog = true;
         public string filePath = @"Launch.log";
         public override void Log(string message)
         {
             using (StreamWriter streamWriter = new StreamWriter(filePath,true))
             {
-                string currentDateTime = DateTime.Now.ToString("dd/MM/yy H:m:ss");
-                streamWriter.WriteLine($"[{currentDateTime}] {message}");
+              
+                if (isfirstLog)
+                {
+                    string currentDateTime = DateTime.Now.ToString("dd/MM/yy H:m:ss");
+                    streamWriter.WriteLine($"[{currentDateTime}] {message}");
+                    isfirstLog = false;
+                }
+                streamWriter.WriteLine($"{message}");
+    
                 streamWriter.Close();
             }
         }
