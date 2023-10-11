@@ -16,17 +16,17 @@ namespace PlayEuwRusClient
 
     public class Install
     {
-       
+
         public CrashReport crash_reporting { get; set; }
 
-        [YamlMember(Alias = "game-settings",ApplyNamingConventions = false)]
+        [YamlMember(Alias = "game-settings", ApplyNamingConventions = false)]
         public GameSettings game_settings { get; set; }
 
         [YamlMemberAttribute(Alias = "gameflow-patcher-lock", ApplyNamingConventions = false)]
         public string gameflow_patcher_lock { get; set; }
 
         [YamlMemberAttribute(Alias = "gameflow-process-info", ApplyNamingConventions = false)]
-        public string gameflow_process_info { get; set; }
+        public GameFlowProcessInfo gameflow_process_info { get; set; }
 
         [YamlMember(Alias = "gameflow-spectate-reconnect-info", ApplyNamingConventions = false)]
         public string gameflow_spectate_reconnect_info { get; set; }
@@ -41,18 +41,30 @@ namespace PlayEuwRusClient
         public Patcher patcher { get; set; }
 
         [YamlMember(Alias = "perks-settings", ApplyNamingConventions = false)]
-        public PerksSettings perksSettings { get; set; }     
-        
+        public PerksSettings perksSettings { get; set; }
+
         [YamlMember(Alias = "riotclient-upgrade", ApplyNamingConventions = false)]
-        public RiotClientUpgrade riotClientUpgrade { get; set; }       
-        
+        public RiotClientUpgrade riotClientUpgrade { get; set; }
+
         [YamlMember(Alias = "rso-auth", ApplyNamingConventions = false)]
-        public RsoAuth rsoAuth { get; set; }      
-        
+        public RsoAuth rsoAuth { get; set; }
+
         [YamlMember(Alias = "telemetry", ApplyNamingConventions = false)]
         public Telemetry telemetry { get; set; }
 
-}
+    }
+
+    public class GameFlowProcessInfo
+    {
+        [YamlMember(Alias = "pid", ApplyNamingConventions = false)]
+        public string pid { get; set; }
+
+        [YamlMember(Alias = "rawArgs", ApplyNamingConventions = false)]
+        public List<string> rawArgs { get; set; }
+
+        [YamlMember(Alias = "standalone", ApplyNamingConventions = false)]
+        public bool standalone { get; set; }
+    }
 
     public class Telemetry
     {
@@ -68,9 +80,9 @@ namespace PlayEuwRusClient
 
     public class RiotClientUpgrade
     {
-        
+
         [YamlMember(Alias = "recovery-failures", ApplyNamingConventions = false)]
-        public int recovery_failures { get; set; }   
+        public int recovery_failures { get; set; }
 
         [YamlMember(Alias = "recovery-successes", ApplyNamingConventions = false)]
         public int recovery_successes { get; set; }
@@ -98,7 +110,7 @@ namespace PlayEuwRusClient
         public bool game_migrated { get; set; }
         public bool game_patcher_available { get; set; }
         public string game_patcher_migrated_time { get; set; }
-        public List<string>locales { get; set; }
+        public List<string> locales { get; set; }
         public Toggles toggles { get; set; }
     }
 
@@ -133,8 +145,9 @@ namespace PlayEuwRusClient
         public string type { get; set; }
     }
 
-    
-    public class NpeSplash{
+
+    public class NpeSplash
+    {
         [YamlMember(Alias = "enableNewPlayerSplash", ApplyNamingConventions = false)]
         public bool enableNewPlayerSplash { get; set; }
     }
