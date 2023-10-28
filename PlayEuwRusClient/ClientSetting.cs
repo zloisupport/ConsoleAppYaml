@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using YamlDotNet.Core;
 using YamlDotNet.Serialization;
 
@@ -41,7 +36,11 @@ namespace PlayEuwRusClient
         public Patcher patcher { get; set; }
 
         [YamlMember(Alias = "perks-settings", ApplyNamingConventions = false)]
-        public PerksSettings perksSettings { get; set; }
+        public PerksSettings perksSettings { get; set; }   
+        
+        
+        [YamlMember(Alias = "riot-id-announcement-settings", ApplyNamingConventions = false)]
+        public RiotIdAnnouncementSettings riotIdAnnouncementSettings { get; set; }
 
         [YamlMember(Alias = "riotclient-upgrade", ApplyNamingConventions = false)]
         public RiotClientUpgrade riotClientUpgrade { get; set; }
@@ -53,6 +52,21 @@ namespace PlayEuwRusClient
         public Telemetry telemetry { get; set; }
 
     }
+
+
+
+    public class RiotIdAnnouncementSettings
+    {
+        [YamlMember(Alias = "accountId", ApplyNamingConventions =false)]
+        public long accountId { get; set; }
+
+        [YamlMember(Alias = "modified", ApplyNamingConventions = false)]
+        public bool modified { get; set; }
+
+        [YamlMember(Alias = "timestamp", ApplyNamingConventions =false)]
+        public int timestamp { get; set; }
+    }
+
 
     public class GameFlowProcessInfo
     {
