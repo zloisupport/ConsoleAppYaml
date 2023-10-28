@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,8 +22,11 @@ namespace PlayEuwRusClient
 
     public class FileLogger : LogBase
     {
+
+
+      
         private static bool isfirstLog = true;
-        public string filePath = @"Launch.log";
+        public string filePath = @"Error.log";
         public override void Log(string message)
         {
             using (StreamWriter streamWriter = new StreamWriter(filePath,true))
@@ -42,6 +47,23 @@ namespace PlayEuwRusClient
 
     public static class LogHelper
     {
+
+        public static void ShowLog()
+        {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+
+            string appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            string filename = Path.Combine(appPath, "Error.log");
+            
+
+            processStartInfo.UseShellExecute = false;
+            processStartInfo.FileName = "notepad.exe";
+            processStartInfo.Arguments = filename;
+            Process.Start(processStartInfo);
+        }
+
+
         private static LogBase logger = null;
         public static void Log(LogTarget target, string message)
         {

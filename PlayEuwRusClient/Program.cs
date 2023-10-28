@@ -211,6 +211,7 @@ namespace PlayEuwRusClient
                     LogHelper.Log(LogTarget.File, $"Expection LauncherSetting: {LauncherSettingExpection.Message}");
                     LogHelper.Log(LogTarget.File, $"-------END Exception-------");
                     isEnable = false;
+                    LogHelper.ShowLog();
                 }
 
                 try
@@ -225,7 +226,7 @@ namespace PlayEuwRusClient
 
                     LogHelper.Log(LogTarget.File, $"-------Exception-------");
                     LogHelper.Log(LogTarget.File, $"File: {product_install_full_path}\\{LeagueClientSettings}");
-                    LogHelper.Log(LogTarget.File, $"Expection: {clientSettingException.Message}");
+                    LogHelper.Log(LogTarget.File, $"Expection: {clientSettingException.Message} {clientSettingException}" );
                     using (StreamReader ccsr = new StreamReader($"{product_install_full_path}\\{LeagueClientSettings}"))
                     {
                         int linenum = 0;
@@ -238,8 +239,11 @@ namespace PlayEuwRusClient
                     }
                     LogHelper.Log(LogTarget.File, $"-------END Exception-------");
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Expection: please open Launch.log");
+                    Console.WriteLine("Expection: please open Error.log");
                     isEnable = false;
+
+                    LogHelper.ShowLog();
+
                 }
             }
         }
@@ -357,7 +361,6 @@ namespace PlayEuwRusClient
 
         private static bool ChekingFiles(string path, string fileName)
         {
-            LogHelper.Log(LogTarget.File, $"Cheking Files");
             if (File.Exists(path + fileName))
             {
                 return true;
