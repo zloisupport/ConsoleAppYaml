@@ -2,6 +2,8 @@
 
 Утилита для игры на сервере euw под русским клиентом.
 
+<img src="https://i4.imageban.ru/out/2024/04/28/6af0da36aa01291b4819f5ff5868476f.png" width="56%" height="20%"/>
+
 
 <img src="https://i6.imageban.ru/out/2023/03/14/a147e558f75d26f8a55e249c4ae67f65.png" width="56%" height="20%"/>
 
@@ -11,7 +13,9 @@
 
 ## Требуется для запуска:
 
-**NET core 5.0.15 (x86 или x64 в зависемости от вашей разрядности)** [Скачиваем тут](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) 
+**.NET 8.0 (x86 или x64 в зависемости от вашей разрядности) для консольной версии** [Скачиваем тут](https://dotnet.microsoft.com/en-us/download/dotnet/8
+.0) 
+**Net Framework 4.7.2 версии с gui** [Скачиваем тут](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net47) 
 
 **Аккаунт на EUW** .Если его нет создаем его тут [Регистрация на EUW](https://signup.euw.leagueoflegends.com/en/signup/index)
 
@@ -19,8 +23,11 @@
 
 ##  Гайд по использованию:
 
-0. Скачиваем архив [ PlayEuwRusClient.zip ](https://github.com/zloisupport/PlayEuwRusClient/releases) последней версии
-1. Распаковываем PlayEuwRusClient.zip и запускаем из распакованной директории **PlayEuwRusClient.exe** (Треб админ права)
+	- PlayEuwRusClient_CLI-  консольная версия
+	- PlayEuwRusClientWF_GUI- графическая 
+
+0. Скачиваем архив [ PlayEuwRusClient_CLI.zip ](https://github.com/zloisupport/PlayEuwRusClient/releases) последней версии
+1. Распаковываем PlayEuwRusClient_CLI.zip и запускаем из распакованной директории **PlayEuwRusClient_CLI.exe** (Треб админ права)
 2. Закрываем все что связано с Riot (Лаунчер,Клиент,Игру).Можно в программе убить эти процессы , команды по очереди(01,02,03)
 3. В программе вводим цифру - **2** для установки EUW сервера,или 1 для переключения на RU.
 4. Далее запускаем игру,авторизуемся (Нужен аккаунт под EUW) если вы увидете кпопку **Обновить** надо закрыть лаунчер.И повторяем пункт -_2_ и _-3_
