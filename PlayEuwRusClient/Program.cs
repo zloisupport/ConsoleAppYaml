@@ -1,16 +1,12 @@
-﻿using Sharprompt;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using YamlDotNet.Core;
-using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.EventEmitters;
 using YamlDotNet.Serialization.NamingConventions;
 
 
@@ -20,13 +16,13 @@ namespace PlayEuwRusClient
 
     class Program
     {
+        private static string ProgramDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+        private static string lol_live_product_settings = "\\Riot Games\\Metadata\\league_of_legends.live\\league_of_legends.live.product_settings.yaml";
+
         private static bool isEnable = true;
-        private static int GetLineNumber([System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
-        {
-            return lineNumber;
-        }
         private static Localization localization = Localization();
-        static void Main(string[] args)
+
+        static void Main()
         {
 
             string asciiText = @"
@@ -85,11 +81,11 @@ namespace PlayEuwRusClient
                     Console.WriteLine($@"
             + ---------------------------------------------+-
             |                                             |
-            |      Copyright (c) 2022-2023,zloisupport    |
-            |                  v 1.0.3.1                  |
+            |      Copyright (c) 2022-2024,zloisupport    |
+            |                  v 1.0.3.2                  |
             |                                             |
             +---------------------------------------------+-");
-              
+
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($@"
              {localization.select_action}  : 
@@ -111,11 +107,11 @@ namespace PlayEuwRusClient
                     {
                         case "rus":
                         case "1":
-                            AppConfigs("RU");
+                            SetLocalConfig(Lang.ru_RU,Server.RU);
                             break;
                         case "eng":
                         case "2":
-                            AppConfigs("EUW");
+                            SetLocalConfig(Lang.ru_RU, Server.EUW);
                             break;
                         case "exit":
                         case "00":
@@ -124,12 +120,12 @@ namespace PlayEuwRusClient
                             break;
                         case "path":
                         case "3":
-                            Console.WriteLine($"{localization.action_set_game_path}:({localization.cancel_action_set_path_game})");
-                            var setFullpath = Convert.ToString(Console.ReadLine());
-                            if (setFullpath != "0")
-                            {
-                                AppConfigs(null, setFullpath);
-                            }
+                            //Console.WriteLine($"{localization.action_set_game_path}:({localization.cancel_action_set_path_game})");
+                            //var setFullpath = Convert.ToString(Console.ReadLine());
+                            //if (setFullpath != "0")
+                            //{
+                            //    AppConfigs(null, setFullpath);
+                            //}
                             break;
                         case "01":
                             KillProcess("RiotClientServices");
@@ -152,12 +148,16 @@ namespace PlayEuwRusClient
         }
 
 
-        private static string Reader(string path, string name)
+        enum Server
         {
-            StreamReader reader = new StreamReader(path + name);
-            string content = reader.ReadToEnd();
-            reader.Close();
-            return content;
+            RU,
+            EUW
+        }
+
+        enum Lang
+        {
+            ru_RU,
+            en_US
         }
 
 
@@ -168,157 +168,190 @@ namespace PlayEuwRusClient
             return local;
         }
 
+
+        private static string ProductInstallFullPath()
+        {
+            string yaml = Path.Join(ProgramDataDir, lol_live_product_settings);
+            string line;
+            using (StreamReader reader = new StreamReader(yaml))
+            {
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.StartsWith("product_install_full_path"))
+                    {
+                        Match match = Regex.Match(line, "\"([^\"]*)\"");
+
+                        if (match.Success)
+                        {
+                            line = match.Groups[1].Value;
+                            return line;
+                        }
+                    }
+                }
+            };
+            return line;
+        }
+
+
+        private static string ProductInstallFullPathLanguage()
+        {
+
+            string yaml = Path.Join(ProgramDataDir, lol_live_product_settings);
+            string? line;
+            using (StreamReader reader = new StreamReader(yaml))
+            {
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.Trim().StartsWith("locale"))
+                    {
+                        Match match = Regex.Match(line, "\"([^\"]*)\"");
+
+                        if (match.Success)
+                        {
+                            line = match.Groups[1].Value;
+                            return line;
+                        }
+                    }
+                }
+            };
+            return line;
+        }
+
+
+        private static void ClientLanguageModify(string path, Lang lang, Server server)
+        {
+            string yaml = Path.Join(path, "Config", "LeagueClientSettings.yaml");
+            string? line;
+            List<string> lines = new List<string>();
+
+            using (StreamReader reader = new StreamReader(yaml))
+            {
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.Trim().StartsWith("locale"))
+                    {
+                        Match match = Regex.Match(line, "\"([^\"]*)\"");
+
+                        if (match.Success)
+                        {
+                            line = line.Replace(match.Groups[1].Value,lang.ToString());
+                        }
+                    }
+
+                    if (line.Trim().StartsWith("region"))
+                    {
+                        Match match = Regex.Match(line, "\"([^\"]*)\"");
+
+                        if (match.Success)
+                        {
+                            line = line.Replace(match.Groups[1].Value,server.ToString());
+                        }
+                    }
+
+                    lines.Add(line);
+                }
+            };
+
+            using (StreamWriter writer = new StreamWriter(yaml))
+            {
+                foreach (var item in lines)
+                {
+                    writer.WriteLine(item);
+                }
+
+            }
+        }
+
+        private static void LaucnerLanguageModify(Lang lang)
+        {
+            string yaml = Path.Join(ProgramDataDir, lol_live_product_settings);
+            string? line;
+            List<string> lines = new List<string>();
+
+            using (StreamReader reader = new StreamReader(yaml))
+            {
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.Trim().StartsWith("default_locale"))
+                    {
+                        Match match = Regex.Match(line, "\"([^\"]*)\"");
+
+                        if (match.Success)
+                        {
+                            line = line.Replace(match.Groups[1].Value, lang.ToString());
+                        }
+                    }
+
+                    if (line.Trim().StartsWith("locale"))
+                    {
+                        Match match = Regex.Match(line, "\"([^\"]*)\"");
+
+                        if (match.Success)
+                        {
+                            line = line.Replace(match.Groups[1].Value, lang.ToString());
+                        }
+                    }
+
+                    lines.Add(line);
+                }
+            };
+
+            using (StreamWriter writer = new StreamWriter(yaml))
+            {
+                foreach (var item in lines)
+                {
+                    writer.WriteLine(item);
+                }
+
+            }
+        }
+
+        private static string LeagueClientSettingsRegion(string path)
+        {
+
+            string yaml = Path.Join(path, "Config", "LeagueClientSettings.yaml");
+            string? line;
+            using (StreamReader reader = new StreamReader(yaml))
+            {
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line.Trim().StartsWith("region"))
+                    {
+                        Match match = Regex.Match(line, "\"([^\"]*)\"");
+
+                        if (match.Success)
+                        {
+                            line = match.Groups[1].Value;
+                            return line;
+                        }
+                        Console.WriteLine(line.Trim());
+                    }
+                }
+            };
+            return line;
+        }
+
+
         private static void ReadLocalConfig()
         {
+            string gamePath = ProductInstallFullPath();
+            string locale = ProductInstallFullPathLanguage();
+            string region = LeagueClientSettingsRegion(gamePath);
+            Console.WriteLine($"{localization.locale}: " + locale);
+            Console.WriteLine($"{localization.server}: " + region);
 
-            string ProgramDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-            var lol_live_product_settings = "\\Riot Games\\Metadata\\league_of_legends.live\\league_of_legends.live.product_settings.yaml";
-            string product_install_full_path = "";
-            string LeagueClientSettings = "\\Config\\LeagueClientSettings.yaml";
-            if (ChekingFiles(ProgramDataDir, lol_live_product_settings))
-            {
-                var reader = Reader(ProgramDataDir, lol_live_product_settings);
-
-                var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(UnderscoredNamingConvention.Instance)
-                .Build();
-
-                try
-                {
-                    Console.WriteLine($"{localization.current_config}");
-                    var p = deserializer.Deserialize<LauncherSetting>(reader);
-                    product_install_full_path = p.product_install_full_path;
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.WriteLine($"{localization.locale}: " + p.settings.locale);
-                }
-                catch (YamlException LauncherSettingExpection)
-                {
-                    LogHelper.Log(LogTarget.File, $"-------Exception-------");
-                    LogHelper.Log(LogTarget.File, $"File: {ProgramDataDir}\\{lol_live_product_settings}");
-
-                    using (StreamReader lcsr = new StreamReader($"{ProgramDataDir}\\{lol_live_product_settings}"))
-                    {
-                        int linenum = 0;
-                        while (!lcsr.EndOfStream)
-                        {
-                            string line = lcsr.ReadLine();
-                            linenum++;
-                            LogHelper.Log(LogTarget.File, $"{linenum} {line}");
-                        }
-
-                    }
-
-                    LogHelper.Log(LogTarget.File, $"Expection LauncherSetting: {LauncherSettingExpection.Message}");
-                    LogHelper.Log(LogTarget.File, $"-------END Exception-------");
-                    isEnable = false;
-                    LogHelper.ShowLog();
-                }
-
-                try
-                {
-                    reader = Reader(product_install_full_path, LeagueClientSettings);
-                    var clientSetting = deserializer.Deserialize<ClientSetting>(reader);
-                    Console.WriteLine($"{localization.server}: " + clientSetting.install.globals.region);
-
-                }
-                catch (YamlException clientSettingException)
-                {
-
-                    LogHelper.Log(LogTarget.File, $"-------Exception-------");
-                    LogHelper.Log(LogTarget.File, $"File: {product_install_full_path}\\{LeagueClientSettings}");
-                    LogHelper.Log(LogTarget.File, $"Expection: {clientSettingException.Message} {clientSettingException}" );
-                    using (StreamReader ccsr = new StreamReader($"{product_install_full_path}\\{LeagueClientSettings}"))
-                    {
-                        int linenum = 0;
-                        while (!ccsr.EndOfStream)
-                        {
-                            string line = ccsr.ReadLine();
-                            linenum++;
-                            LogHelper.Log(LogTarget.File, $"{linenum} {line}");
-                        }
-                    }
-                    LogHelper.Log(LogTarget.File, $"-------END Exception-------");
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Expection: please open Error.log");
-                    isEnable = false;
-
-                    LogHelper.ShowLog();
-
-                }
-            }
         }
 
-        private static void AppConfigs(string server, string setFullpath = "")
+        private static void SetLocalConfig(Lang lang,Server server)
         {
-            if (isEnable)
-            {
-                Console.Clear();
-                string ProgramDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                var lol_live_product_settings = "\\Riot Games\\Metadata\\league_of_legends.live\\league_of_legends.live.product_settings.yaml";
-                string product_install_full_path = "";
-                string LeagueClientSettings = "\\Config\\LeagueClientSettings.yaml";
-
-                if (ChekingFiles(ProgramDataDir, lol_live_product_settings))
-                {
-
-                    var reader = new StreamReader(ProgramDataDir + lol_live_product_settings);
-                    var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(UnderscoredNamingConvention.Instance)
-                    .Build();
-                    try
-                    {
-                        var p = deserializer.Deserialize<LauncherSetting>(reader);
-                        product_install_full_path = p.product_install_full_path;
-                        p.locale_data.available_locales = new List<string>() { "ru_RU", "en_GB", "de_DE", "es_ES" };
-                        p.locale_data.default_locale = "ru_RU";
-                        p.settings.locale = "ru_RU";
-                        if (setFullpath != "") { p.product_install_full_path = setFullpath; }
-                        reader.Close();
-                        WriteProductSettings(p, ProgramDataDir + lol_live_product_settings);
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"{localization.parameter_applying} {server} {localization.server}!");
-                        Console.WriteLine($"{localization.message_success}!");
-                        Console.ResetColor();
-                    }
-                    catch (YamlException e)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("Deserialize error:" + e);
-                    };
-
-                }
-
-                if (ChekingFiles(product_install_full_path, LeagueClientSettings))
-                {
-
-                    var reader = new StreamReader(product_install_full_path + LeagueClientSettings);
-                    var deserializer = new DeserializerBuilder()
-                    .WithNamingConvention(UnderscoredNamingConvention.Instance)
-                    .Build();
-                    var p = deserializer.Deserialize<ClientSetting>(reader);
-
-                    p.install.crash_reporting.enabled = false;
-                    if (server != "") p.install.globals.region = server;
-
-                    reader.Close();
-                    WriteLeagueClient(p, product_install_full_path + LeagueClientSettings);
-
-                }
-            }
-        }
-
-        #region  Write Data conf
-        private static void WriteLeagueClient(ClientSetting data, string file)
-        {
-
-            using (var writer = new StreamWriter(file))
-            {
-                var serializer = new SerializerBuilder()
-                    .WithNamingConvention(UnderscoredNamingConvention.Instance)
-                    .Build();
-                serializer.Serialize(writer, data);
-            }
-
+            string gamePath = ProductInstallFullPath();
+            ClientLanguageModify(gamePath, lang, server);
+            LaucnerLanguageModify(lang);
         }
 
         private static void CheckProcess()
@@ -341,34 +374,6 @@ namespace PlayEuwRusClient
 
                 process.Kill();
                 LogHelper.Log(LogTarget.File, $"Process {processName} killed");
-            }
-        }
-        private static void WriteProductSettings(LauncherSetting data, string file)
-        {
-
-            using (var writer = new StreamWriter(file))
-            {
-                var serializer = new SerializerBuilder()
-                    .WithNamingConvention(UnderscoredNamingConvention.Instance)
-                    .Build();
-                serializer.Serialize(writer, data);
-            }
-
-        }
-        #endregion
-
-
-
-        private static bool ChekingFiles(string path, string fileName)
-        {
-            if (File.Exists(path + fileName))
-            {
-                return true;
-            }
-            else
-            {
-                LogHelper.Log(LogTarget.File, $"File \"{path + fileName}\" not found");
-                return false;
             }
         }
     }
