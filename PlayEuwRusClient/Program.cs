@@ -5,9 +5,6 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using YamlDotNet.Core;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NamingConventions;
 
 
 
@@ -107,7 +104,7 @@ namespace PlayEuwRusClient
                     {
                         case "rus":
                         case "1":
-                            SetLocalConfig(Lang.ru_RU,Server.RU);
+                            SetLocalConfig(Lang.ru_RU, Server.RU);
                             break;
                         case "eng":
                         case "2":
@@ -237,7 +234,7 @@ namespace PlayEuwRusClient
 
                         if (match.Success)
                         {
-                            line = line.Replace(match.Groups[1].Value,lang.ToString());
+                            line = line.Replace(match.Groups[1].Value, lang.ToString());
                         }
                     }
 
@@ -247,7 +244,7 @@ namespace PlayEuwRusClient
 
                         if (match.Success)
                         {
-                            line = line.Replace(match.Groups[1].Value,server.ToString());
+                            line = line.Replace(match.Groups[1].Value, server.ToString());
                         }
                     }
 
@@ -347,7 +344,7 @@ namespace PlayEuwRusClient
 
         }
 
-        private static void SetLocalConfig(Lang lang,Server server)
+        private static void SetLocalConfig(Lang lang, Server server)
         {
             string gamePath = ProductInstallFullPath();
             ClientLanguageModify(gamePath, lang, server);

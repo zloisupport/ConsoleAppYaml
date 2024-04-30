@@ -8,12 +8,17 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace PlayEuwRusClientWF
-{
+{   
     public partial class Form : System.Windows.Forms.Form
     {
-        private static string ProgramDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-        private static string lol_live_product_settings = "\\Riot Games\\Metadata\\league_of_legends.live\\league_of_legends.live.product_settings.yaml";
+        private static Localization Locale()
+        {
+            Localization localization = new Localization();
+            Localization local = localization.ReadLocalization();
+            return local;
+        }
 
+        private static Localization locale = Locale();
 
         Dictionary<string, string> languages = new Dictionary<string, string>
             {
@@ -27,6 +32,21 @@ namespace PlayEuwRusClientWF
                 { "RU", "Русский" },
                 { "EUW", "EUW" },
             };
+        
+
+        private void SetLocale()
+        {
+            groupBox2.Text = locale.select_action;
+            lblServer.Text = locale.server;
+            lblLang.Text = locale.locale;
+            btnExit.Text = locale.action_exit;
+            btnSave.Text = locale.btn_save;
+            groupBox1.Text = locale.end_task;
+            button3.Text = locale.action_kill_riot_client;
+            button4.Text = locale.action_kill_leagueflegends_game;
+            button5.Text = locale.action_kill_riot_client;
+            button6.Text = locale.action_kill_riot_all;
+        }
 
         public Form()
         {
@@ -34,6 +54,7 @@ namespace PlayEuwRusClientWF
             cbxLang.Items.AddRange(languages.Values.ToArray());
             cbxServer.Items.AddRange(servers.Values.ToArray());
             ReadLocalConfig();
+            SetLocale();
         }
 
         enum Server
@@ -284,7 +305,7 @@ namespace PlayEuwRusClientWF
             LaucnerLanguageModify(langEnum);
             Timer timer = new Timer();
             timer.Interval = 2000;
-            lblStatus.Text = "Success!";
+            lblStatus.Text = locale.parameter_applying;
             lblStatus.ForeColor = System.Drawing.Color.Green;
             timer.Tick += delegate
             {
@@ -294,5 +315,6 @@ namespace PlayEuwRusClientWF
             };
             timer.Start();
         }
+
     }
 }
