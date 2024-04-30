@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -46,6 +48,7 @@ namespace PlayEuwRusClientWF
             button4.Text = locale.action_kill_leagueflegends_game;
             button5.Text = locale.action_kill_riot_client;
             button6.Text = locale.action_kill_riot_all;
+
         }
 
         public Form()
@@ -53,6 +56,8 @@ namespace PlayEuwRusClientWF
             InitializeComponent();
             cbxLang.Items.AddRange(languages.Values.ToArray());
             cbxServer.Items.AddRange(servers.Values.ToArray());
+            lblVersion.Parent = pictureBox1;
+            lblVersion.Text = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             ReadLocalConfig();
             SetLocale();
         }

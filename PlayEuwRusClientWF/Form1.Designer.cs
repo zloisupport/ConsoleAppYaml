@@ -43,6 +43,7 @@
             this.lblServer = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -98,7 +99,6 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "End Task";
-           
             // 
             // button6
             // 
@@ -167,7 +167,6 @@
             this.lblLang.Size = new System.Drawing.Size(55, 13);
             this.lblLang.TabIndex = 5;
             this.lblLang.Text = "Language";
-
             // 
             // lblServer
             // 
@@ -195,11 +194,23 @@
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
+            // lblVersion
+            // 
+            this.lblVersion.BackColor = System.Drawing.Color.Transparent;
+            this.lblVersion.ForeColor = System.Drawing.SystemColors.Info;
+            this.lblVersion.Location = new System.Drawing.Point(417, 27);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(103, 16);
+            this.lblVersion.TabIndex = 8;
+            this.lblVersion.Text = "BUILD VERSION";
+            this.lblVersion.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(521, 242);
+            this.ClientSize = new System.Drawing.Size(521, 241);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.groupBox2);
@@ -234,6 +245,7 @@
         private System.Windows.Forms.Label lblLang;
         private System.Windows.Forms.Label lblServer;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblVersion;
     }
 }
 
