@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PlayEuwRusClient
 {
-   
+
     public enum LogTarget
     {
         File
     }
     public abstract class LogBase
     {
-       
+
         public abstract void Log(string message);
     }
 
@@ -24,14 +20,14 @@ namespace PlayEuwRusClient
     {
 
 
-      
+
         private static bool isfirstLog = true;
         public string filePath = @"Error.log";
         public override void Log(string message)
         {
-            using (StreamWriter streamWriter = new StreamWriter(filePath,true))
+            using (StreamWriter streamWriter = new StreamWriter(filePath, true))
             {
-              
+
                 if (isfirstLog)
                 {
                     string currentDateTime = DateTime.Now.ToString("dd/MM/yy H:m:ss");
@@ -39,7 +35,7 @@ namespace PlayEuwRusClient
                     isfirstLog = false;
                 }
                 streamWriter.WriteLine($"{message}");
-    
+
                 streamWriter.Close();
             }
         }
@@ -55,7 +51,7 @@ namespace PlayEuwRusClient
             string appPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             string filename = Path.Combine(appPath, "Error.log");
-            
+
 
             processStartInfo.UseShellExecute = false;
             processStartInfo.FileName = "notepad.exe";

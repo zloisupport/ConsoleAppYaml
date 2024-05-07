@@ -5,7 +5,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ApplicationIcon>lss.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.0.3.1</Version>
+    <Version>1.0.3.3</Version>
     <Description>Utility for playing on the euw server under the Russian client.</Description>
     <Copyright>zloisupport</Copyright>
     <RepositoryUrl>https://github.com/zloisupport/PlayEuwRusClient</RepositoryUrl>

@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace PlayEuwRusClientWF
-{   
+{
     public partial class Form : System.Windows.Forms.Form
     {
         private static Localization Locale()
@@ -34,7 +34,7 @@ namespace PlayEuwRusClientWF
                 { "RU", "Русский" },
                 { "EUW", "EUW" },
             };
-        
+
 
         private void SetLocale()
         {
@@ -46,7 +46,7 @@ namespace PlayEuwRusClientWF
             groupBox1.Text = locale.end_task;
             button3.Text = locale.action_kill_riot_client;
             button4.Text = locale.action_kill_leagueflegends_game;
-            button5.Text = locale.action_kill_riot_client;
+            button5.Text = locale.action_kill_leagueflegends_client;
             button6.Text = locale.action_kill_riot_all;
 
         }
@@ -284,16 +284,38 @@ namespace PlayEuwRusClientWF
         }
 
 
+        private bool CheckingConfigFile()
+        {
+            string ProgramDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            string yaml = Path.Combine(ProgramDataDir, "Riot Games", "Metadata", "league_of_legends.live", "league_of_legends.live.product_settings.yaml");
+            if (File.Exists(yaml))
+            {
+                return true;
+            }
+            return false;
+        }
+
         private void ReadLocalConfig()
         {
-            string gamePath = ProductInstallFullPath();
-            string locale = ProductInstallFullPathLanguage();
-            string region = LeagueClientSettingsRegion(gamePath);
+            if (CheckingConfigFile())
+            {
+                string gamePath = ProductInstallFullPath();
+                string locale = ProductInstallFullPathLanguage();
+                string region = LeagueClientSettingsRegion(gamePath);
 
-            string lng = languages.Where(x => x.Key.Equals(locale)).Select(x => x.Value).FirstOrDefault();
-            string server = servers.Where(x => x.Key.Equals(region)).Select(x => x.Value).FirstOrDefault();
-            cbxLang.SelectedItem = lng;
-            cbxServer.SelectedItem = server;
+                string lng = languages.Where(x => x.Key.Equals(locale)).Select(x => x.Value).FirstOrDefault();
+                string server = servers.Where(x => x.Key.Equals(region)).Select(x => x.Value).FirstOrDefault();
+                cbxLang.SelectedItem = lng;
+                cbxServer.SelectedItem = server;
+            }
+            else
+            {
+                string ProgramDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                string yaml = Path.Combine(ProgramDataDir, "Riot Games", "Metadata", "league_of_legends.live", "league_of_legends.live.product_settings.yaml");
+
+                MessageBox.Show($"Missing League of Legends file!\n{yaml}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning); ; ;
+                Environment.Exit(1);
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)

@@ -1,36 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace PlayEuwRusClient
 {
-   public class Localization
+    public class Localization
     {
-        public string select_action { get; set; } 
+        public string select_action { get; set; }
         public string action_set_russian_server { get; set; }
         public string action_set_euw_server { get; set; }
         public string action_set_game_path { get; set; }
-        public string action_kill_riot_client  { get; set; } 
-        public string action_kill_leagueflegends_client  { get; set; }
-        public string action_kill_leagueflegends_game  { get; set; } 
-        public string action_kill_riot_all { get; set; } 
-        public string action_exit { get; set; } 
-        public string server { get; set; } 
-        public string locale { get; set; } 
-        public string parameter_applying { get; set; } 
-        public string current_config { get; set; } 
-        public string enter_command { get; set; } 
-        public string message_success { get; set; } 
+        public string action_kill_riot_client { get; set; }
+        public string action_kill_leagueflegends_client { get; set; }
+        public string action_kill_leagueflegends_game { get; set; }
+        public string action_kill_riot_all { get; set; }
+        public string action_exit { get; set; }
+        public string server { get; set; }
+        public string locale { get; set; }
+        public string parameter_applying { get; set; }
+        public string current_config { get; set; }
+        public string enter_command { get; set; }
+        public string message_success { get; set; }
         public string warning_please_close_riot_apps { get; set; }
         public string cancel_action_set_path_game { get; set; }
 
 
-        public  Localization ReadLocalization()
+        public Localization ReadLocalization()
         {
             SystemLanguage systemLanguage = new SystemLanguage();
             string localizationFile = "en.yaml";
